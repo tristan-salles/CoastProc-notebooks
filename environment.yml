@@ -31,7 +31,7 @@ dependencies:
   - pymt
   - pip:
       - numba==0.55.0
-      - pymannkendall==1.2
+      #- pymannkendall==1.2
       - pybeach
       - py-wave-runup
       - matplotlib==3.3.4
