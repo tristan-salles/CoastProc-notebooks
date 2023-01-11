@@ -1,0 +1,37 @@
+name: coastproc-notebooks
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - jupyterlab=2.1
+  - numpy
+  - pip
+  - pandas
+  - scipy
+  - netCDF4
+  - compilers
+  - gfortran
+  - python-graphviz
+  - seaborn
+  - scikit-image
+  - scikit-learn=0.23
+  - h5py
+  - xarray
+  - cmocean
+  - shapely
+  - cartopy
+  - dask
+  - zarr
+  - wavespectra
+#   - gdal
+#   - geopandas
+#   - pillow
+#   - astropy
+  - spyder
+  - pymt
+  - pip:   
+      - pybeach
+      - py-wave-runup
+      - matplotlib==3.3.4
+      - windrose
+      - radwave
