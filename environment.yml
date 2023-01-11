@@ -36,4 +36,4 @@ dependencies:
       - windrose
       - radwave
       - numba==0.55.0
-      - pymannkendall==1.2
+#       - pymannkendall==1.2
