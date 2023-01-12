@@ -23,14 +23,11 @@ dependencies:
   - dask
   - zarr
   - wavespectra
-#   - gdal
-#   - geopandas
-#   - pillow
-#   - astropy
   - spyder
   - pymt
   - pymannkendall==1.2
   - numba==0.55.0
+  - basemap
   - pip:
       - pybeach
       - py-wave-runup
