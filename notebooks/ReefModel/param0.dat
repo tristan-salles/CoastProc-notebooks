@@ -1,0 +1,12 @@
+bintanja2008_2.dat ! RSL variations file
+02 ! Slope (%)
+12 ! Maximum reef growth rate (mm/yr)
+50 ! Maximum reef growth depth (m)
+1 ! Optimal depth for vertical gradient (m)
+2 ! Optimal depth for horizontal gradient (m)
+2 ! Maximum depth for wave erosion (m)
+0.0 ! Uplift rate (mm/yr)
+30 ! Eroded volume (mm3/yr)
+10000 ! Temporal increment (yr)
+.true. ! Reef construction or not ?
+.true. ! Wave erosion or not ?
