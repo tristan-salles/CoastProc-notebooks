@@ -94,20 +94,20 @@ program REEF
 ! Defining initial substrate geometry
       call geomini(jmax, slopi, x, y, xmin, xmax, ymin, ymax, dj, shifty)
 ! Displaying parameters controlling reef growth
-      print*, '****************************************************'
-      print*, 'Eustatic variations file=', name0
-      print*, 'Simulated time', n,'kyrs'
-      print*, 'Initial slope=', tan(slopi)*100, '%'
-      print*, 'Maximum reef growth rate=', rgr0, 'mm/yr'
-      print*, 'Maximum reef growth depth=', dreef, 'm'
-      print*, 'Optimal reef growth depth=', zopt, 'm'
-      print*, 'Wave erosion maximum depth=', zmax, 'm'
-      print*, 'Vertical substrate rate=', umoy, 'mm/yr'
-      print*, 'Eroded volume=', V0, 'mm2/yr'
-      print*, 'Marine sequence initiating', imax, 'kyrs ago'
-      print*, 'Total vertical displacement=', upmax, 'm'
-      print*, '****************************************************'
-      print*, 'jmax', jmax
+      !print*, '****************************************************'
+      !print*, 'Eustatic variations file=', name0
+      !print*, 'Simulated time', n,'kyrs'
+      !print*, 'Initial slope=', tan(slopi)*100, '%'
+      !print*, 'Maximum reef growth rate=', rgr0, 'mm/yr'
+      !print*, 'Maximum reef growth depth=', dreef, 'm'
+      !print*, 'Optimal reef growth depth=', zopt, 'm'
+      !print*, 'Wave erosion maximum depth=', zmax, 'm'
+      !print*, 'Vertical substrate rate=', umoy, 'mm/yr'
+      !print*, 'Eroded volume=', V0, 'mm2/yr'
+      !print*, 'Marine sequence initiating', imax, 'kyrs ago'
+      !print*, 'Total vertical displacement=', upmax, 'm'
+      !print*, '****************************************************'
+      !print*, 'jmax', jmax
 ! Writing controlling parameters for the final figure
       open(12,file='parame.dat')
       write(12,'(a, a, a, i5,a)') '1 35 Eustatic variations file = ', trim(name0), ' over', n,'kyrs'
@@ -232,13 +232,13 @@ program REEF
 ! writing output file
             !call scribe(.false., name3, jmax, prems, der, dz, x, y, xoldd, yoldd)
 ! writing profile
-            open(69,file=myname)
-            do j=jmax, 1, -1
-                  write(69,*) -x(j),y(j)
-            enddo
-            close(69)
-
-
+            !if(modulo(i,10)==0 .or. i==imax)then
+              open(69,file=myname)
+              do j=jmax, 1, -1
+                    write(69,*) -x(j),y(j)
+              enddo
+              close(69)
+            !endif
       enddo                                     ! End of time loop
 
 ! Opening files for final writings
@@ -260,9 +260,9 @@ program REEF
       open(55, file=name1)
       name1='rsl0'//namep
       open(56, file=name1)
-      open(48, file='param')
-      write(48,*) namep
-      close(48)
+      !open(48, file='param')
+      !write(48,*) namep
+      !close(48)
 
 ! Writing final topography
       do j=jmax, 1, -1

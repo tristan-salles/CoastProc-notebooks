@@ -17,8 +17,14 @@ from scipy.signal import savgol_filter
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib import cm
+from matplotlib.colors import ListedColormap
 
 def runReefModel(foutput='model'):
+
+    dirpath = Path(foutput)
+    if dirpath.exists() and dirpath.is_dir():
+        shutil.rmtree(dirpath)
 
     # Check if the excecutable exist
     reef_code = Path("reef2D")
@@ -225,6 +231,91 @@ def plotFigNoSL(stp, outdata):
                            fontsize=6, weight='bold')
     cb2.set_label('Marine Isotope Stage',fontsize=8, weight='bold') #, rotation=270)
     plt.show()
+
+def plotReef(outdata,zrange):
+
+    fout = outdata[0]
+    reefLay = outdata[1]
+    dist = outdata[2]
+    basex = outdata[3]
+    basey = outdata[4]
+    sealvl = outdata[5]
+    uprate = outdata[6]
+    box = outdata[7]
+
+    timevals = np.zeros(len(fout)+1)
+    timevals[0] = -(fout['nb'].iloc[0]+1)
+    for k in range(1,len(timevals)):
+        timevals[k] = timevals[k-1]+1
+
+    step = len(fout)
+    profiles = []
+    for k in range(step):
+        out = reefLay[k]
+        topx = out['x'].values
+        topy = out['y'].values
+        f = interpolate.interp1d(topx, topy, kind='linear')
+        pz = f(dist)
+        profiles.append(pz)
+
+    for k in range(step):
+        profiles[k] += uprate*(step-k)
+
+    lay = []
+    lay.append(profiles[-1])
+    p = 0
+    for k in range(step-2,-1,-1):
+        lay.append(np.minimum(lay[p],profiles[k]))
+        p += 1
+
+    ztop = lay[0].max()
+    zbot = lay[0].min()
+    f = interpolate.interp1d([dist[0],dist[-1]], [ztop,zbot], kind='linear')
+    zbase = f(dist)
+    zbase = np.minimum(zbase,lay[-1])
+    lay.append(zbase)
+
+    cmap = plt.get_cmap('RdPu_r', len(lay))
+
+    rdpu = cm.get_cmap('RdPu', len(lay))
+    newcolors = rdpu(np.linspace(0, 1, len(lay)))
+    grey = np.array([189/256, 189/256, 189/256, 1])
+    newcolors[:1, :] = grey
+    newcmp = ListedColormap(newcolors)
+    cmap2 = plt.get_cmap(newcmp, len(lay))
+
+    fig, ax1 = plt.subplots(1,1,figsize=(10,5))
+    for k in range(len(lay)):
+        ax1.plot(dist, lay[k], '-', color='k', zorder=3, lw=0.8)
+        ax1.fill_between(dist, lay[k],lay[k-1], color=cmap(k), alpha=0.8, zorder=1)
+
+    ax1.plot(dist, lay[0], '-', color='k', zorder=3, lw=1)
+    ax1.plot(dist, lay[-1], '-', color='k', zorder=3, lw=1)
+
+    # Sealevel
+    ax1.plot([dist[0],dist[-1]],[sealvl['sl'][step],sealvl['sl'][step]],
+             '-', color='navy', zorder=0, lw=0.8)
+    ax1.fill_between([dist[0],dist[-1]],-1000,[sealvl['sl'][step],sealvl['sl'][step]],
+                     color='tab:blue', zorder=0, alpha=0.2)
+
+    ax1.fill_between(dist,-1000, lay[-1], color='lightgray', zorder=1)
+    ax1.set_xlim([dist[0],dist[-1]])
+    ax1.set_ylim([zrange[0],zrange[1]])
+    ax1.set_ylabel('Elevation (m)', fontsize=9, weight='bold')
+    ax1.set_xlabel('Distance (m)', fontsize=9, weight='bold')
+    ax1.tick_params(axis="x", labelsize=8)
+    ax1.tick_params(axis="y", labelsize=8)
+
+    divider = make_axes_locatable(ax1)
+    cax2 = divider.append_axes("right", size="1.5%", pad=0.1)
+    ticks=np.arange(0,1.001,1/len(timevals[:step+1]))[1:]+0.5/len(timevals[:step+1])
+    cb2 = mpl.colorbar.ColorbarBase(cax2, cmap=cmap2, ticks=ticks)
+    cb2.ax.set_yticklabels(np.abs(timevals[:step+1]).astype(int),fontsize=6, weight='bold')
+    cb2.set_label('Stratal layer interval (kyr)',fontsize=8, weight='bold') #, rotation=270)
+
+    plt.show()
+
+    return
 
 def plotFigQuaternary(stp, fname, outdata, ylim=[-300,50], textpos=[-4000,25], view=False):
 
