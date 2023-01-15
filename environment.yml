@@ -22,7 +22,7 @@ dependencies:
   - pymt
   - pymannkendall==1.2
   - numba==0.55.0
-  - opencv
+  - gdal
   - rasterio
   - pip:
       - pybeach
@@ -30,3 +30,4 @@ dependencies:
       - matplotlib==3.3.4
       - windrose
       - radwave
+      - opencv-python-headless
