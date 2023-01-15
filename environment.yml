@@ -22,6 +22,8 @@ dependencies:
   - pymt
   - pymannkendall==1.2
   - numba==0.55.0
+  - opencv
+  - rasterio
   - pip:
       - pybeach
       - py-wave-runup
