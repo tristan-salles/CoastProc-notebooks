@@ -35,8 +35,15 @@ def bic_score_GMM(data,cluster_range, covariance_type):
   return bic_score
 
 def show_image(image):
-  plt.figure(figsize=(12,12))
-  plt.imshow(image)
+  fig, ax1 = plt.subplots(1,1,figsize=(12,12))
+  im1 = plt.imshow(image)
+  plt.colorbar(im1,fraction=0.02, pad=0.04)
+  plt.axis('off')
+  plt.show()
+
+def show_class(image):
+  fig, ax1 = plt.subplots(1,1,figsize=(12,12))
+  im1 = plt.imshow(image)
   plt.axis('off')
   plt.show()
 
